@@ -6,14 +6,14 @@ This document outlines the tasks required to define the game project's folder st
 
 - **/src**: Contains all source code.
   - **/src/engine**: Core game engine and runtime logic.
-  - **/src/ui**: Front-end code for the web application.
+  - **/src/ui**: Front-end code for the web application, built with Vue, Vite, and TypeScript. This folder will include the main Vue components, configuration files (like vite.config.ts), and entry points.
   - **/src/ai**: AI components and behavior modules.
   - **/src/physics**: Physics simulation modules.
   - **/src/networking**: Networking code (if multiplayer/online features are included).
 
 - **/assets**: Game assets such as models, textures, audio, etc.
 
-- **/doc**: Documentation files including project specs, system design, implementation tasks, and other planning documents.
+- **/doc**: Documentation files including project specs, design docs, task lists, etc.
 
 - **/build**: Build scripts and output directories.
 
@@ -45,21 +45,23 @@ This document outlines the tasks required to define the game project's folder st
 ## 3. Task List
 
 1. **Finalize Folder Structure**
-   [ ] Create the initial directory outline as described above.
+   [x] Create the initial directory outline as described above, incorporating Vue, Vite, and TypeScript for the front-end.
 
 2. **Select Front-End Framework**
-   [ ] Research and decide between React and Vue for UI development.
-   [ ] Document the decision rationale.
+   [x] Finalize the front-end framework by choosing Vue as the basis for the web application, using the latest version of Vite for build tooling and Tailwind 4.x for styling.
+   [x] Document the decision rationale.
 
 3. **Evaluate Rendering Engine Options**
-   [ ] Compare Three.js and Babylon.js for 3D rendering capabilities in modern browsers.
-   [ ] Test initial prototypes if necessary.
+   [x] Compare Three.js and Babylon.js for 3D rendering capabilities in modern browsers.
+   [x] Chose Three.js based on its maturity, flexibility, and community support.
 
 4. **Choose a Physics Library**
-   [ ] Compare features and performance of Cannon.js vs Ammo.js.
+   [x] Compare features and performance of Cannon.js vs Ammo.js.
+   [x] Chose Cannon.js based on its simplicity and adequate performance for our needs.
 
 5. **Outline AI Module Requirements**
-   [ ] Identify necessary AI behaviors and potential libraries or frameworks to support them.
+   [x] Identify necessary AI behaviors, including simulation of NPC actions, dynamic environment interactions (traffic, events), real-time decision making, and resource optimization.
+   [x] Document potential libraries or frameworks, while keeping the option open for custom AI solutions if required.
 
 6. **Set Up Project Scaffold**
    [ ] Initialize the project with Node.js and npm.
