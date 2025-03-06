@@ -60,6 +60,27 @@ The game is an ambitious project focusing on complex simulations, dynamic city e
 - Full release with comprehensive game features.
 - Ongoing updates and maintenance post-release.
 
+## Multiplayer and Social Dynamics Tasks
+
+- **User Progression System:**
+  - Implement features that allow users to start as individual citizens, create a family, rent houses, and ultimately construct their own homes.
+
+- **Points and Leveling:**
+  - Develop a points system where users earn points through in-game activities. As users accumulate points, they level up and unlock new opportunities.
+
+- **City Mayor Election:**
+  - Design and implement an election mechanism where eligible players can be voted in as city mayors by other users.
+
+- **Mayor Functionalities:**
+  - Enable city mayors to construct key infrastructures such as schools, hospitals, and cultural centers.
+  - Provide city mayors with administrative tools to manage urban projects and budgets.
+
+- **Inter-City Interactions:**
+  - Develop mechanisms for business, trade, and cooperative events between multiple in-game cities.
+
+- **Democratic Governance:**
+  - Create a system that supports democratic decision-making: project budgets must be proposed by the mayor and approved by the residents of the city.
+
 ## Summary
 
 This task plan serves as a roadmap for the game development process, ensuring that each phase—from initial design to final deployment—is executed systematically and efficiently. The plan is based on the vision outlined in [project.md] and will guide the development team through careful planning, prototyping, development, and post-launch maintenance.
