@@ -65,10 +65,17 @@ This document outlines the tasks required to define the game project's folder st
   - **/internal/websocket**: WebSocket implementation.
   - **/internal/models**: Data models and schemas.
   - **/internal/database**: Database access and persistence.
+    - **/internal/database/postgres**: PostgreSQL repository implementations.
+    - **/internal/database/mongodb**: MongoDB repository implementations.
+    - **/internal/database/redis**: Redis repository and cache implementations.
+    - **/internal/database/migrations**: Database migration scripts and tools.
 
 - **/pkg**: Public library code (if any).
 
 - **/configs**: Configuration files for the backend.
+  - **/configs/postgres**: PostgreSQL configuration.
+  - **/configs/mongodb**: MongoDB configuration.
+  - **/configs/redis**: Redis configuration.
 
 ### Shared Resources
 - **/doc**: Documentation files including project specs, design docs, task lists, etc.
@@ -76,6 +83,7 @@ This document outlines the tasks required to define the game project's folder st
 - **/build**: Build scripts and output directories.
 
 - **/scripts**: Build and deployment scripts.
+  - **/scripts/db**: Database maintenance and migration scripts.
 
 - **/tests**: Unit and integration tests.
   - **/tests/unit**: Unit tests for frontend and backend
@@ -102,7 +110,9 @@ This document outlines the tasks required to define the game project's folder st
 - **Backend:**
   - Develop server-side components in Go 1.24 using the standard net/http package.
   - Use WebSockets for real-time communication between frontend and backend.
-  - Implement Couchbase for document-oriented data storage and Redis for caching.
+  - Implement PostgreSQL for user data, authentication, governance, and transactions.
+  - Employ MongoDB for game state, content management, and AI-related data.
+  - Use Redis for caching, session management, and real-time data.
   - Integrate Zitadel Cloud for authentication and user management.
 
 - **Tooling and Build:**
@@ -111,6 +121,7 @@ This document outlines the tasks required to define the game project's folder st
   - Implement ESLint and Prettier for code quality and formatting.
   - Use Vitest for unit testing Vue components.
   - Use Docker for containerization and deployment.
+  - Employ Flyway for PostgreSQL migrations.
 
 ## 3. Task List
 
@@ -135,7 +146,14 @@ This document outlines the tasks required to define the game project's folder st
    [x] Identify necessary AI behaviors, including simulation of NPC actions, dynamic environment interactions (traffic, events), real-time decision making, and resource optimization.
    [x] Document potential libraries or frameworks, while keeping the option open for custom AI solutions if required.
 
-6. **Set Up Project Scaffold**
+6. **Select Database Technologies**
+   [x] Evaluate database requirements for different use cases (user data, game state, real-time data, etc.).
+   [x] Choose PostgreSQL for structured data requiring ACID compliance.
+   [x] Select MongoDB for flexible document storage.
+   [x] Confirm Redis for caching and real-time operations.
+   [x] Document the database strategy and migration approach.
+
+7. **Set Up Project Scaffold**
    [ ] Initialize the frontend project with Vue 3, Vite, TypeScript, and Tailwind CSS:
      - [ ] Set up Vite 6 project with Vue 3 and TypeScript 5
      - [ ] Configure Tailwind CSS 4.x with PostCSS plugins
@@ -152,46 +170,70 @@ This document outlines the tasks required to define the game project's folder st
      - [ ] Set up cmd/server with basic HTTP server implementation
      - [ ] Implement internal package structure (auth, game, api, websocket, models, database)
      - [ ] Implement WebSocket server capability (using Gorilla WebSocket or similar)
-     - [ ] Configure database connections for Couchbase and Redis
+     - [ ] Set up database repository interfaces and implementations
+     - [ ] Configure database connections for PostgreSQL, MongoDB, and Redis
      - [ ] Set up Zitadel Cloud authentication integration
+
+   [ ] Configure databases and migrations:
+     - [ ] Set up PostgreSQL schemas and initial migrations with Flyway
+     - [ ] Create MongoDB collections and indexes
+     - [ ] Configure Redis for caching and session management
+     - [ ] Implement data access layer with repository pattern
+     - [ ] Set up connection pooling and database configuration
 
    [ ] Configure Docker for development:
      - [ ] Create Dockerfiles for frontend and backend
-     - [ ] Set up docker-compose for local development
+     - [ ] Set up docker-compose for local development with database services
      - [ ] Configure volume mounting for hot reloading
+     - [ ] Create database initialization scripts
 
    [ ] Implement basic development workflow:
      - [ ] Configure hot reloading for frontend development
      - [ ] Set up Go development tools and live reloading
      - [ ] Create development documentation for the team
+     - [ ] Implement database backup and restore procedures
 
-7. **Establish Data Communication**
+8. **Establish Data Communication**
    [ ] Define WebSocket communication protocol between frontend and backend
    [ ] Create type-safe API client using TypeScript
    [ ] Implement Pinia stores for managing server state
    [ ] Implement basic data models for game state synchronization
    [ ] Create API endpoints for core game functionality
-   [ ] Set up data persistence with Couchbase and Redis
+   [ ] Set up data persistence across multiple databases:
+     - [ ] Implement user data storage in PostgreSQL
+     - [ ] Store game state in MongoDB
+     - [ ] Utilize Redis for caching and real-time data
 
-8. **Integrate Continuous Integration (CI)**
+9. **Implement Database Migration Strategy**
+   [ ] Set up Flyway for PostgreSQL schema migrations
+   [ ] Create migration scripts for schema evolution
+   [ ] Implement MongoDB schema versioning strategy
+   [ ] Develop data access abstraction layer
+   [ ] Create data mappers between domain objects and database entities
+   [ ] Document database access patterns and query optimization strategies
+
+10. **Integrate Continuous Integration (CI)**
    [ ] Establish CI workflows to facilitate automated testing and builds
    [ ] Configure testing frameworks for both frontend and backend
    [ ] Set up code quality and linting tools
    [ ] Implement basic security scanning
    [ ] Configure type checking in CI pipeline
+   [ ] Add database schema validation checks to CI process
 
-9. **Create Development Environment Documentation**
+11. **Create Development Environment Documentation**
    [ ] Document development setup instructions
    [ ] Create API documentation
    [ ] Document data models and schemas
    [ ] Create component documentation
    [ ] Document state management patterns
+   [ ] Prepare database interaction examples and best practices
    [ ] Prepare contribution guidelines for the team
 
 ## 4. Milestones
 
 - **Initial Setup:** Complete the folder structure and project scaffold.
-- **Framework Decisions:** Finalize choices for the front-end, rendering engine, physics library, and any AI tools.
+- **Framework Decisions:** Finalize choices for the front-end, rendering engine, physics library, and database technologies.
+- **Database Foundation:** Establish database schemas, repositories, and migration strategies.
 - **Prototype Build:** Develop an initial working prototype demonstrating the chosen stack.
 - **Documentation Update:** Continuously update this document as decisions are made and milestones are reached.
 

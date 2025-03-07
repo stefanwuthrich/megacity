@@ -112,55 +112,150 @@ As a complex MMO city simulation game, Megacity requires robust database solutio
   - Immutable data storage
   - Long-term archiving capabilities
 
-## Database Selection Considerations
+## Revised Database Selections
 
-Different use cases may benefit from specialized database technologies:
+After careful consideration of the use cases and requirements, we have selected the following open-source database technologies:
 
-1. **Document Databases** (e.g., Couchbase, MongoDB):
-   - Well-suited for user profiles, game state, and content management
-   - Flexible schema for evolving game features
-   - Good for complex, nested data structures
+### Primary Database Systems
 
-2. **In-Memory Databases** (e.g., Redis):
-   - Ideal for real-time game data, active sessions, and caching
-   - Provides extremely low latency
-   - Supports pub/sub for real-time updates
+1. **PostgreSQL**
+   - **Primary Use Cases**: 
+     - User and Account Management
+     - Governance and Social Systems
+     - Transaction History (using TimescaleDB extension)
+   - **Key Strengths**:
+     - Strong data integrity and ACID compliance
+     - Robust security features
+     - PostGIS extension for spatial data
+     - JSONB support for semi-structured data
+     - TimescaleDB extension for time-series capabilities
+     - Mature ecosystem with excellent tooling
+     - Strong community support and documentation
 
-3. **Time-Series Databases**:
-   - Beneficial for analytics, metrics, and historical transactions
-   - Optimized for time-based queries and aggregations
+2. **Redis**
+   - **Primary Use Cases**: 
+     - Real-time Game Data
+     - Caching layer for all other databases
+   - **Key Strengths**:
+     - Extremely low latency for real-time operations
+     - Pub/Sub for real-time notifications
+     - Rich data structures (sorted sets for leaderboards, etc.)
+     - Redis Streams for event processing
+     - Simple operational model
+     - Widely adopted and well-documented
 
-4. **Graph Databases**:
-   - Could enhance social interactions and relationship management
-   - Efficient for complex relationship queries
-   - Potential for advanced NPC behavior modeling
+3. **MongoDB**
+   - **Primary Use Cases**: 
+     - Persistent Game State
+     - Content Management
+     - AI and Simulation Data
+   - **Key Strengths**:
+     - Flexible schema for evolving game features
+     - Excellent developer experience
+     - Powerful aggregation framework
+     - Native geo-spatial indexing
+     - Strong documentation and community support
+     - Scalable distributed architecture
 
-5. **Relational Databases** (e.g., PostgreSQL):
-   - Still valuable for structured data with complex relationships
-   - Strong ACID compliance for critical transactions
-   - Robust query capabilities for complex analytical needs
+### Future Expansion Option
 
-## Current Database Selections
+4. **ClickHouse** (for future analytics needs)
+   - **Primary Use Case**: 
+     - Analytics and Metrics
+   - **Key Strengths**:
+     - Extremely fast analytical queries
+     - Efficient storage with high compression
+     - Excellent for high-volume data analysis
+     - Can be added later when analytics needs grow
 
-Based on previous decisions documented in `backend-requirements.md`:
+## Implementation Strategy
 
-- **Couchbase**: Primary document-oriented database for flexible, scalable storage
-- **Redis**: In-memory database for caching and real-time operations
+### Phased Deployment Approach
 
-These selections provide a good foundation but may require supplementation or refinement as specific use cases are developed in more detail.
+1. **Phase 1: Core Implementation**
+   - Deploy PostgreSQL for user data, authentication, and social systems
+   - Implement Redis for caching and real-time operations
+   - Build abstraction layers to facilitate future database additions
 
-## Recommendations for Implementation
+2. **Phase 2: Advanced Game State**
+   - Integrate MongoDB for complex game state objects and content
+   - Maintain PostgreSQL for user and transaction data
+   - Enhance Redis caching strategy for both systems
 
-1. **Layered Strategy**: Implement a multi-database approach that matches specific use cases to appropriate database technologies.
+3. **Phase 3: Analytics Expansion** (Future)
+   - Implement ClickHouse when analytics needs mature
+   - Develop data pipelines from operational databases
+   - Keep analytics infrastructure isolated from game-critical systems
 
-2. **Data Access Layer**: Create a unified data access layer that abstracts the underlying database technologies from game logic.
+### Use Case to Database Mapping
 
-3. **Caching Strategy**: Develop a comprehensive caching strategy using Redis to reduce load on primary data stores.
+| Use Case | Primary Database | Secondary/Cache |
+|----------|------------------|----------------|
+| User & Account Management | PostgreSQL | Redis (cache) |
+| Persistent Game State | MongoDB | Redis (cache) |
+| Real-time Game Data | Redis | - |
+| Governance & Social | PostgreSQL | Redis (cache) |
+| AI & Simulation | MongoDB | Redis (cache) |
+| Analytics & Metrics | PostgreSQL → ClickHouse (future) | - |
+| Content Management | MongoDB | Redis (cache) |
+| Transaction History | PostgreSQL (TimescaleDB) | - |
 
-4. **Sharding Plan**: For scale, consider data sharding strategies based on logical game divisions (e.g., cities, regions).
+## Data Migration Strategies
 
-5. **Backup and Recovery**: Implement robust backup, recovery, and data migration processes.
+Effective data migration is critical for both the initial deployment and future system evolution. The following strategies and tools will be employed:
 
-6. **Monitoring**: Set up comprehensive monitoring of database performance and availability.
+### Migration Tooling
 
-These database use cases and considerations will guide the implementation of the data persistence layer for the Megacity MMO Browser Game. 
+1. **PostgreSQL Migration Tools**:
+   - **Flyway**: Schema migration and version control
+   - **pg_dump/pg_restore**: For database backup and restoration
+   - **Foreign Data Wrappers**: For connecting to external data sources
+   - **pgloader**: For bulk data loading from various sources
+
+2. **MongoDB Migration Tools**:
+   - **MongoDB Compass**: Visual tool for data exploration and manipulation
+   - **mongodump/mongorestore**: For backup and restoration
+   - **MongoDB Atlas Data Migration Service**: For cloud migrations (if needed)
+   - **Mongoose Migrations**: For schema changes when using Mongoose ODM
+
+3. **Redis Migration Tools**:
+   - **redis-cli**: For manual operations and scripting
+   - **RDB tools**: For backup and restoration
+
+4. **ETL and Data Pipeline Tools**:
+   - **Apache NiFi**: For complex data flows between systems
+   - **Talend Open Studio**: For ETL operations
+   - **Airflow**: For scheduling and orchestrating data workflows
+
+### Migration Patterns
+
+1. **Schema Evolution**:
+   - Implement versioned migration scripts
+   - Support both forward and rollback migrations
+   - Test migrations in staging environment before production
+
+2. **Data Synchronization**:
+   - Implement Change Data Capture (CDC) where needed
+   - Use dual-write patterns during transition phases
+   - Validate data consistency after migrations
+
+3. **Zero-Downtime Migrations**:
+   - Use blue/green deployment for database switches
+   - Implement read-only modes during critical transitions
+   - Design for backward compatibility during transition periods
+
+### Data Access Abstraction
+
+To facilitate database technology changes and migrations:
+
+1. **Repository Pattern**:
+   - Create domain-specific repositories with clear interfaces
+   - Hide database implementation details from business logic
+   - Enable switching database technologies with minimal code changes
+
+2. **Data Mapper Layer**:
+   - Implement mappers between domain objects and database entities
+   - Handle schema differences through mapping logic
+   - Support versioning of data structures
+
+This comprehensive migration strategy ensures that the database infrastructure can evolve smoothly as the game grows in scale and complexity. 
