@@ -155,14 +155,14 @@ This document outlines the tasks required to define the game project's folder st
 
 7. **Set Up Project Scaffold**
    [ ] Initialize the frontend project with Vue 3, Vite, TypeScript, and Tailwind CSS:
-     - [ ] Set up Vite 6 project with Vue 3 and TypeScript 5
-     - [ ] Configure Tailwind CSS 4.x with PostCSS plugins
-     - [ ] Set up feature-based folder structure
-     - [ ] Configure Pinia for state management
-     - [ ] Set up Vue Router with code-splitting
-     - [ ] Implement base Composition API utilities
+     - [x] Set up Vite 6 project with Vue 3 and TypeScript 5
+     - [x] Configure Tailwind CSS 4.x with PostCSS plugins
+     - [x] Set up feature-based folder structure
+     - [x] Configure Pinia for state management
+     - [x] Set up Vue Router with code-splitting
+     - [x] Implement base Composition API utilities
      - [ ] Create initial Three.js integration setup
-     - [ ] Configure ESLint and Prettier
+     - [x] Configure ESLint and Prettier
      - [ ] Set up Vitest for unit testing
 
    [ ] Initialize the Go backend project:
