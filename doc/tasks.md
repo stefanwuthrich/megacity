@@ -129,8 +129,6 @@ This document outlines the tasks required to define the game project's folder st
    [x] Create the initial directory outline as described above, incorporating Vue, Vite, and TypeScript for the front-end.
    [x] Restructure the backend following Go best practices with cmd/internal directory organization.
    [x] Set up the feature-based frontend architecture with Composition API best practices.
-   
-   Note: The folder structure has been created without adding any code files yet. This provides a clean foundation for our iterative development approach.
 
 2. **Select Front-End Framework**
    [x] Finalize the front-end framework by choosing Vue as the basis for the web application, using the latest version of Vite for build tooling and Tailwind 4.x for styling.
