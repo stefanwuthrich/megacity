@@ -7,12 +7,51 @@ This document outlines the tasks required to define the game project's folder st
 ### Frontend and Game Engine
 - **/src**: Contains all frontend and game engine source code.
   - **/src/engine**: Core game engine and runtime logic.
-  - **/src/ui**: Front-end code for the web application, built with Vue, Vite, and TypeScript. This folder will include the main Vue components, configuration files (like vite.config.ts), and entry points.
+    - **/src/engine/core**: Core engine functionality
+    - **/src/engine/physics**: Physics integration with Cannon.js
+    - **/src/engine/rendering**: Three.js integration and rendering
+    - **/src/engine/utils**: Utility functions for the engine
+    - **/src/engine/types**: TypeScript type definitions
+
+  - **/src/ui**: Front-end application code, built with Vue 3, Vite, and TypeScript.
+    - **/src/ui/assets**: Static assets (images, fonts, global styles)
+    - **/src/ui/components**: Reusable Vue components
+      - **/src/ui/components/common**: Shared UI components (buttons, inputs, etc.)
+      - **/src/ui/components/layout**: Layout components (headers, footers, etc.)
+      - **/src/ui/components/game**: Game-specific UI components
+    - **/src/ui/composables**: Vue 3 composition API functions
+    - **/src/ui/features**: Feature-based modules
+      - **/src/ui/features/auth**: Authentication related components and logic
+      - **/src/ui/features/city**: City management features
+      - **/src/ui/features/player**: Player-related features
+      - **/src/ui/features/social**: Social interaction features
+    - **/src/ui/pages**: Top-level page components
+    - **/src/ui/router**: Vue Router configuration
+    - **/src/ui/stores**: Pinia stores for state management
+    - **/src/ui/services**: API services and external integrations
+    - **/src/ui/styles**: Tailwind configuration and global styles
+    - **/src/ui/types**: TypeScript type definitions
+    - **/src/ui/utils**: Utility functions
+
   - **/src/ai**: AI components and behavior modules.
-  - **/src/physics**: Physics simulation modules.
+    - **/src/ai/behaviors**: Individual AI behavior modules
+    - **/src/ai/decision**: Decision-making systems
+    - **/src/ai/pathfinding**: Pathfinding algorithms
+    - **/src/ai/types**: TypeScript type definitions
+
   - **/src/networking**: Client-side networking code for communicating with the backend.
+    - **/src/networking/api**: API client integration
+    - **/src/networking/websocket**: WebSocket client integration
+    - **/src/networking/models**: Data models for network communication
+    - **/src/networking/types**: TypeScript type definitions
+
+- **/public**: Static files that should be served as-is (favicon, robots.txt, etc.)
 
 - **/assets**: Game assets such as models, textures, audio, etc.
+  - **/assets/models**: 3D models
+  - **/assets/textures**: Texture files
+  - **/assets/audio**: Sound effects and music
+  - **/assets/animations**: Animation files
 
 ### Backend (Go)
 - **/cmd**: Main applications.
@@ -39,19 +78,26 @@ This document outlines the tasks required to define the game project's folder st
 - **/scripts**: Build and deployment scripts.
 
 - **/tests**: Unit and integration tests.
+  - **/tests/unit**: Unit tests for frontend and backend
+  - **/tests/integration**: Integration tests
+  - **/tests/e2e**: End-to-end tests
 
 ## 2. Framework and Library Selections
 
 - **Front-End (UI):**
-  - Use Vue.js as the web framework with TypeScript for type safety.
-  - Leverage Tailwind CSS 4.x for responsive, modern styling.
-  - Implement state management with Pinia or similar Vue-compatible solution.
+  - Use Vue 3 as the web framework with TypeScript for type safety.
+  - Implement the Composition API for better code organization and type inference.
+  - Use Pinia for state management (Vue 3's recommended solution replacing Vuex).
+  - Leverage Tailwind CSS 4.x for responsive, utility-first styling with component extraction.
+  - Use Vue Router 4.x for page routing with code-splitting capabilities.
 
 - **Game Engine / Rendering:**
   - Use Three.js for 3D rendering in the browser.
+  - Implement custom Three.js composables for Vue 3 integration.
 
 - **Physics Simulation:**
   - Implement Cannon.js for physics simulation.
+  - Create abstraction layer for physics engine interactions.
 
 - **Backend:**
   - Develop server-side components in Go 1.24 using the standard net/http package.
@@ -61,7 +107,9 @@ This document outlines the tasks required to define the game project's folder st
 
 - **Tooling and Build:**
   - Use Node.js with npm for frontend dependency management.
-  - Set up Vite 6 with TypeScript 4 for frontend build tooling.
+  - Set up Vite 6 with TypeScript 5 for frontend build tooling.
+  - Implement ESLint and Prettier for code quality and formatting.
+  - Use Vitest for unit testing Vue components.
   - Use Docker for containerization and deployment.
 
 ## 3. Task List
@@ -69,6 +117,7 @@ This document outlines the tasks required to define the game project's folder st
 1. **Finalize Folder Structure**
    [x] Create the initial directory outline as described above, incorporating Vue, Vite, and TypeScript for the front-end.
    [ ] Restructure the backend following Go best practices with cmd/internal directory organization.
+   [ ] Set up the feature-based frontend architecture with Composition API best practices.
 
 2. **Select Front-End Framework**
    [x] Finalize the front-end framework by choosing Vue as the basis for the web application, using the latest version of Vite for build tooling and Tailwind 4.x for styling.
@@ -87,11 +136,16 @@ This document outlines the tasks required to define the game project's folder st
    [x] Document potential libraries or frameworks, while keeping the option open for custom AI solutions if required.
 
 6. **Set Up Project Scaffold**
-   [ ] Initialize the frontend project with Vue, Vite, TypeScript, and Tailwind CSS:
-     - [ ] Set up Vite 6 project with Vue 3 and TypeScript 4
-     - [ ] Configure Tailwind CSS 4.x
-     - [ ] Set up basic project structure and components
+   [ ] Initialize the frontend project with Vue 3, Vite, TypeScript, and Tailwind CSS:
+     - [ ] Set up Vite 6 project with Vue 3 and TypeScript 5
+     - [ ] Configure Tailwind CSS 4.x with PostCSS plugins
+     - [ ] Set up feature-based folder structure
+     - [ ] Configure Pinia for state management
+     - [ ] Set up Vue Router with code-splitting
+     - [ ] Implement base Composition API utilities
      - [ ] Create initial Three.js integration setup
+     - [ ] Configure ESLint and Prettier
+     - [ ] Set up Vitest for unit testing
 
    [ ] Initialize the Go backend project:
      - [ ] Create Go module at root level (go mod init github.com/username/megacity)
@@ -104,6 +158,7 @@ This document outlines the tasks required to define the game project's folder st
    [ ] Configure Docker for development:
      - [ ] Create Dockerfiles for frontend and backend
      - [ ] Set up docker-compose for local development
+     - [ ] Configure volume mounting for hot reloading
 
    [ ] Implement basic development workflow:
      - [ ] Configure hot reloading for frontend development
@@ -112,6 +167,8 @@ This document outlines the tasks required to define the game project's folder st
 
 7. **Establish Data Communication**
    [ ] Define WebSocket communication protocol between frontend and backend
+   [ ] Create type-safe API client using TypeScript
+   [ ] Implement Pinia stores for managing server state
    [ ] Implement basic data models for game state synchronization
    [ ] Create API endpoints for core game functionality
    [ ] Set up data persistence with Couchbase and Redis
@@ -121,11 +178,14 @@ This document outlines the tasks required to define the game project's folder st
    [ ] Configure testing frameworks for both frontend and backend
    [ ] Set up code quality and linting tools
    [ ] Implement basic security scanning
+   [ ] Configure type checking in CI pipeline
 
 9. **Create Development Environment Documentation**
    [ ] Document development setup instructions
    [ ] Create API documentation
    [ ] Document data models and schemas
+   [ ] Create component documentation
+   [ ] Document state management patterns
    [ ] Prepare contribution guidelines for the team
 
 ## 4. Milestones

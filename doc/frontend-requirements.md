@@ -4,34 +4,88 @@ This document outlines the requirements and decisions for the frontend of the ga
 
 ## 1. Framework and Tooling
 
-- **Framework:**
-  - We have chosen **Vue** as the core framework for the web application.
-  - The project will use TypeScript for enhanced type safety and maintainability.
+- **Core Framework:**
+  - **Vue 3** as the primary framework, utilizing the Composition API for better code organization, reusability, and TypeScript integration.
+  - **TypeScript 5** for enhanced type safety, developer experience, and maintainability.
 
-- **Build Tool:**
-  - The latest version of **Vite** will be used to provide a fast and modern build process.
+- **Build Tools:**
+  - **Vite 6** for fast development and optimized production builds.
+  - **ESLint** and **Prettier** for code quality and consistent formatting.
+  - **Vitest** for unit testing Vue components and utilities.
 
 - **Styling:**
-  - **Tailwind CSS 4.x** will be employed to ensure a responsive and customizable design system.
+  - **Tailwind CSS 4.x** for utility-first styling with component extraction.
+  - **PostCSS** plugins for additional styling capabilities.
+
+- **State Management:**
+  - **Pinia** as the recommended state management solution for Vue 3.
+  - Feature-based store organization for better scalability.
+
+- **Routing:**
+  - **Vue Router 4.x** for page routing with code-splitting capabilities.
+  - Route guard integration for authentication and authorization.
 
 ## 2. 3D Integration
 
 - **Rendering Library:**
-  - **Three.js** is the chosen 3D rendering library due to its maturity, flexibility, and strong community support.
-  - Integration with Vue is facilitated by community resources and established patterns.
+  - **Three.js** for 3D rendering, selected for its maturity, flexibility, and strong community support.
+  - Custom composables for Three.js integration with Vue 3's reactivity system.
+  - Performance optimization through WebGL best practices.
 
 ## 3. Project Structure for Frontend
 
-- The frontend code will reside in the `/src/ui` directory.
-- It will contain the main Vue components, configuration files (e.g., `vite.config.ts`), and entry points for the application.
+### Feature-Based Architecture
+The frontend code will follow a feature-based architecture that groups related components, composables, and stores by domain rather than by type:
+
+- **/src/ui**: Base directory for the Vue application
+  - **/assets**: Static assets (images, fonts, global styles)
+  - **/components**: Reusable UI components
+    - **/common**: Shared UI components (buttons, inputs, etc.)
+    - **/layout**: Layout components (headers, footers, etc.)
+    - **/game**: Game-specific UI components
+  - **/composables**: Vue 3 composition API functions
+  - **/features**: Feature-based modules
+    - **/auth**: Authentication related components and logic
+    - **/city**: City management features
+    - **/player**: Player-related features
+    - **/social**: Social interaction features
+  - **/pages**: Top-level page components
+  - **/router**: Vue Router configuration
+  - **/stores**: Pinia stores for state management
+  - **/services**: API services and external integrations
+  - **/styles**: Tailwind configuration and global styles
+  - **/types**: TypeScript type definitions
+  - **/utils**: Utility functions
+
+### Component Organization
+Components will follow a hierarchy inspired by atomic design principles:
+- **Common components**: Small, reusable UI elements
+- **Feature components**: Domain-specific components
+- **Layout components**: Structure and page layout
+- **Page components**: Top-level route components
 
 ## 4. Development and Best Practices
 
-- Use modular component design to promote reusability and maintainability.
-- Follow modern web development practices to ensure compatibility across current browsers.
-- Optimize performance for dynamic interaction and real-time updates within the game.
+- **Composition API**: Use composition functions (composables) to share logic between components.
+- **Type Safety**: Utilize TypeScript for all components, stores, and utilities.
+- **Responsive Design**: Implement mobile-first responsive design using Tailwind breakpoints.
+- **Performance Optimization**:
+  - Implement code-splitting for routes and large components
+  - Use lightweight rendering techniques for game UI
+  - Optimize asset loading and caching
+- **Testing**:
+  - Unit test components and composables with Vitest
+  - Implement component documentation with Storybook or similar tool
 
-## 5. Future Enhancements
+## 5. Frontend-Backend Integration
 
-- Explore additional integrations or libraries as needed based on evolving project requirements.
-- Continuously assess UI/UX improvements as the application evolves.
+- Create type-safe API services using TypeScript interfaces shared with the backend
+- Implement WebSocket client with automatic reconnection and message queueing
+- Use Pinia stores to manage server state and synchronization
+
+## 6. Future Enhancements
+
+- Explore additional optimizations for 3D rendering performance
+- Consider implementing WebGL shaders for custom visual effects
+- Evaluate WebAssembly for performance-critical computations
+- Continuously assess UI/UX improvements as the application evolves
