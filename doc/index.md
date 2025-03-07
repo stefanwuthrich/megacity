@@ -12,6 +12,7 @@ This documentation index provides a comprehensive guide to all documentation fil
 
 - [Frontend Requirements](frontend-requirements.md) - UI framework, tooling, and design decisions for the web-based game interface.
 - [Backend Requirements](backend-requirements.md) - Server-side technology stack, architecture, and requirements for game state management and multiplayer functionality.
+- [Database Requirements](database.md) - Detailed database use cases, requirements, and implementation strategies.
 - [AI Requirements](ai-requirements.md) - Artificial intelligence implementation details for NPC behavior, dynamic environments, and real-time decision making.
 - [Engine Physics](engine-physics.md) - Physics engine requirements and design using Cannon.js for realistic interactions within the game world.
 
