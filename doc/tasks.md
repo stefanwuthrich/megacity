@@ -65,7 +65,7 @@ This document outlines the tasks required to define the game project's folder st
 
 6. **Set Up Project Scaffold**
    [ ] Initialize the project with Node.js and npm.
-   [ ] Configure build tools (Vite, Babel, etc.) and create basic starter files.
+   [ ] Configure build tools (Vite 6, Typescript 4, etc.) and create basic starter files.
 
 7. **Integrate Continuous Integration (CI)**
    [ ] Establish CI workflows to facilitate automated testing and builds.
