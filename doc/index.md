@@ -21,6 +21,20 @@ This documentation index provides a comprehensive guide to all documentation fil
 - [Gameplay](gameplay.md) - Game mechanics, player experience, and features that create the dynamic city simulation experience.
 - [Tasks](tasks.md) - Implementation tasks including folder structure, framework definitions, and development milestones.
 
+## Project Structure
+
+### Frontend (/src)
+- Game engine components
+- Vue.js UI components
+- Three.js rendering
+- Physics simulation with Cannon.js
+
+### Backend (Go)
+- CMD-based application structure
+- Internal packages for game logic, API, and data
+- RESTful and WebSocket API endpoints
+- Couchbase and Redis integration
+
 ## Key Features
 
 ### Technology Stack

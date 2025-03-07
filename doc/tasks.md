@@ -4,19 +4,39 @@ This document outlines the tasks required to define the game project's folder st
 
 ## 1. Define Folder Structure
 
-- **/src**: Contains all source code.
+### Frontend and Game Engine
+- **/src**: Contains all frontend and game engine source code.
   - **/src/engine**: Core game engine and runtime logic.
   - **/src/ui**: Front-end code for the web application, built with Vue, Vite, and TypeScript. This folder will include the main Vue components, configuration files (like vite.config.ts), and entry points.
   - **/src/ai**: AI components and behavior modules.
   - **/src/physics**: Physics simulation modules.
-  - **/src/networking**: Networking code (if multiplayer/online features are included).
-  - **/src/backend**: Go backend services for server-side logic, API endpoints, and data management.
+  - **/src/networking**: Client-side networking code for communicating with the backend.
 
 - **/assets**: Game assets such as models, textures, audio, etc.
 
+### Backend (Go)
+- **/cmd**: Main applications.
+  - **/cmd/server**: The main API and WebSocket server application.
+  - **/cmd/worker**: Any background workers or processes (if needed).
+
+- **/internal**: Private application code.
+  - **/internal/auth**: Authentication and authorization logic.
+  - **/internal/game**: Game state management and rules.
+  - **/internal/api**: API handlers and routing.
+  - **/internal/websocket**: WebSocket implementation.
+  - **/internal/models**: Data models and schemas.
+  - **/internal/database**: Database access and persistence.
+
+- **/pkg**: Public library code (if any).
+
+- **/configs**: Configuration files for the backend.
+
+### Shared Resources
 - **/doc**: Documentation files including project specs, design docs, task lists, etc.
 
 - **/build**: Build scripts and output directories.
+
+- **/scripts**: Build and deployment scripts.
 
 - **/tests**: Unit and integration tests.
 
@@ -48,6 +68,7 @@ This document outlines the tasks required to define the game project's folder st
 
 1. **Finalize Folder Structure**
    [x] Create the initial directory outline as described above, incorporating Vue, Vite, and TypeScript for the front-end.
+   [ ] Restructure the backend following Go best practices with cmd/internal directory organization.
 
 2. **Select Front-End Framework**
    [x] Finalize the front-end framework by choosing Vue as the basis for the web application, using the latest version of Vite for build tooling and Tailwind 4.x for styling.
@@ -73,7 +94,9 @@ This document outlines the tasks required to define the game project's folder st
      - [ ] Create initial Three.js integration setup
 
    [ ] Initialize the Go backend project:
-     - [ ] Set up a basic Go module structure with net/http package
+     - [ ] Create Go module at root level (go mod init github.com/username/megacity)
+     - [ ] Set up cmd/server with basic HTTP server implementation
+     - [ ] Implement internal package structure (auth, game, api, websocket, models, database)
      - [ ] Implement WebSocket server capability (using Gorilla WebSocket or similar)
      - [ ] Configure database connections for Couchbase and Redis
      - [ ] Set up Zitadel Cloud authentication integration
