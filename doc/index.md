@@ -24,10 +24,12 @@ This documentation index provides a comprehensive guide to all documentation fil
 ## Project Structure
 
 ### Frontend (/src)
-- Game engine components
-- Vue.js UI components
-- Three.js rendering
-- Physics simulation with Cannon.js
+- Modern feature-based architecture with Vue 3 and TypeScript
+- Composition API for better reusability and type safety
+- Component organization following UI component hierarchy
+- State management with Pinia stores
+- Three.js integration via custom composables
+- Type-safe networking and API services
 
 ### Backend (Go)
 - CMD-based application structure
@@ -38,10 +40,13 @@ This documentation index provides a comprehensive guide to all documentation fil
 ## Key Features
 
 ### Technology Stack
-- Vue.js with TypeScript for frontend
+- Vue 3 with Composition API and TypeScript 5
+- Tailwind CSS 4.x for utility-first styling
+- Pinia for state management
+- Vue Router 4.x with code-splitting
 - Three.js for 3D rendering
 - Cannon.js for physics simulation
-- Go for backend services
+- Go 1.24 for backend services
 - WebSockets for real-time communication
 - Couchbase and Redis for data persistence and caching
 - Zitadel for authentication
@@ -52,6 +57,14 @@ This documentation index provides a comprehensive guide to all documentation fil
 - Democratic governance system with player voting
 - Inter-city trade and cooperation
 - Real-time physics and environmental simulation
+
+## Development Practices
+- Feature-based module organization
+- Strong typing throughout with TypeScript
+- Component documentation and style guides
+- Comprehensive testing with Vitest
+- CI/CD pipeline with automated testing and deployment
+- Docker-based development environment
 
 ## How to Use This Documentation
 
