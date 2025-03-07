@@ -10,6 +10,7 @@ This document outlines the tasks required to define the game project's folder st
   - **/src/ai**: AI components and behavior modules.
   - **/src/physics**: Physics simulation modules.
   - **/src/networking**: Networking code (if multiplayer/online features are included).
+  - **/src/backend**: Go backend services for server-side logic, API endpoints, and data management.
 
 - **/assets**: Game assets such as models, textures, audio, etc.
 
@@ -22,25 +23,26 @@ This document outlines the tasks required to define the game project's folder st
 ## 2. Framework and Library Selections
 
 - **Front-End (UI):**
-  - Use a modern web framework like **React** or **Vue**.
-  - Leverage HTML5, CSS3, and JavaScript (or TypeScript) for a responsive, dynamic user interface.
-  - Consider state management libraries (e.g., Redux for React or Vuex for Vue) and UI frameworks like Material-UI or Bootstrap.
+  - Use Vue.js as the web framework with TypeScript for type safety.
+  - Leverage Tailwind CSS 4.x for responsive, modern styling.
+  - Implement state management with Pinia or similar Vue-compatible solution.
 
 - **Game Engine / Rendering:**
-  - Evaluate WebGL-based engines such as **Three.js** or **Babylon.js** for rendering dynamic 3D environments in the browser.
-  - Consider a fallback or complementary 2D rendering using canvas if required.
+  - Use Three.js for 3D rendering in the browser.
 
 - **Physics Simulation:**
-  - Investigate JavaScript physics libraries like **Cannon.js** or **Ammo.js** for realistic physics behavior.
+  - Implement Cannon.js for physics simulation.
 
-- **AI Systems:**
-  - Examine available libraries for implementing adaptive AI behaviors in JavaScript.
-  - Consider custom solutions if advanced or specific AI logic is needed.
+- **Backend:**
+  - Develop server-side components in Go 1.24 using the standard net/http package.
+  - Use WebSockets for real-time communication between frontend and backend.
+  - Implement Couchbase for document-oriented data storage and Redis for caching.
+  - Integrate Zitadel Cloud for authentication and user management.
 
 - **Tooling and Build:**
-  - Use **Node.js** with npm (or yarn) for dependency management.
-  - Set up build tools such as **Vite** with Typescript for a modern development workflow.
-  - Implement CI/CD pipelines for testing and deployment.
+  - Use Node.js with npm for frontend dependency management.
+  - Set up Vite 6 with TypeScript 4 for frontend build tooling.
+  - Use Docker for containerization and deployment.
 
 ## 3. Task List
 
@@ -64,14 +66,44 @@ This document outlines the tasks required to define the game project's folder st
    [x] Document potential libraries or frameworks, while keeping the option open for custom AI solutions if required.
 
 6. **Set Up Project Scaffold**
-   [ ] Initialize the project with Node.js and npm.
-   [ ] Configure build tools (Vite 6, Typescript 4, etc.) and create basic starter files.
+   [ ] Initialize the frontend project with Vue, Vite, TypeScript, and Tailwind CSS:
+     - [ ] Set up Vite 6 project with Vue 3 and TypeScript 4
+     - [ ] Configure Tailwind CSS 4.x
+     - [ ] Set up basic project structure and components
+     - [ ] Create initial Three.js integration setup
 
-7. **Integrate Continuous Integration (CI)**
-   [ ] Establish CI workflows to facilitate automated testing and builds.
+   [ ] Initialize the Go backend project:
+     - [ ] Set up a basic Go module structure with net/http package
+     - [ ] Implement WebSocket server capability (using Gorilla WebSocket or similar)
+     - [ ] Configure database connections for Couchbase and Redis
+     - [ ] Set up Zitadel Cloud authentication integration
 
-8. **Document All Decisions**
-   [ ] Record technical choices and folder structure decisions in additional documentation as the project progresses.
+   [ ] Configure Docker for development:
+     - [ ] Create Dockerfiles for frontend and backend
+     - [ ] Set up docker-compose for local development
+
+   [ ] Implement basic development workflow:
+     - [ ] Configure hot reloading for frontend development
+     - [ ] Set up Go development tools and live reloading
+     - [ ] Create development documentation for the team
+
+7. **Establish Data Communication**
+   [ ] Define WebSocket communication protocol between frontend and backend
+   [ ] Implement basic data models for game state synchronization
+   [ ] Create API endpoints for core game functionality
+   [ ] Set up data persistence with Couchbase and Redis
+
+8. **Integrate Continuous Integration (CI)**
+   [ ] Establish CI workflows to facilitate automated testing and builds
+   [ ] Configure testing frameworks for both frontend and backend
+   [ ] Set up code quality and linting tools
+   [ ] Implement basic security scanning
+
+9. **Create Development Environment Documentation**
+   [ ] Document development setup instructions
+   [ ] Create API documentation
+   [ ] Document data models and schemas
+   [ ] Prepare contribution guidelines for the team
 
 ## 4. Milestones
 
