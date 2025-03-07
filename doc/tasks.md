@@ -4,54 +4,19 @@ This document outlines the tasks required to define the game project's folder st
 
 ## 1. Define Folder Structure
 
-### Frontend and Game Engine
-- **/src**: Contains all frontend and game engine source code.
-  - **/src/engine**: Core game engine and runtime logic.
-    - **/src/engine/core**: Core engine functionality
-    - **/src/engine/physics**: Physics integration with Cannon.js
-    - **/src/engine/rendering**: Three.js integration and rendering
-    - **/src/engine/utils**: Utility functions for the engine
-    - **/src/engine/types**: TypeScript type definitions
-
-  - **/src/ui**: Front-end application code, built with Vue 3, Vite, and TypeScript.
-    - **/src/ui/assets**: Static assets (images, fonts, global styles)
-    - **/src/ui/components**: Reusable Vue components
-      - **/src/ui/components/common**: Shared UI components (buttons, inputs, etc.)
-      - **/src/ui/components/layout**: Layout components (headers, footers, etc.)
-      - **/src/ui/components/game**: Game-specific UI components
-    - **/src/ui/composables**: Vue 3 composition API functions
-    - **/src/ui/features**: Feature-based modules
-      - **/src/ui/features/auth**: Authentication related components and logic
-      - **/src/ui/features/city**: City management features
-      - **/src/ui/features/player**: Player-related features
-      - **/src/ui/features/social**: Social interaction features
-    - **/src/ui/pages**: Top-level page components
-    - **/src/ui/router**: Vue Router configuration
-    - **/src/ui/stores**: Pinia stores for state management
-    - **/src/ui/services**: API services and external integrations
-    - **/src/ui/styles**: Tailwind configuration and global styles
-    - **/src/ui/types**: TypeScript type definitions
-    - **/src/ui/utils**: Utility functions
-
-  - **/src/ai**: AI components and behavior modules.
-    - **/src/ai/behaviors**: Individual AI behavior modules
-    - **/src/ai/decision**: Decision-making systems
-    - **/src/ai/pathfinding**: Pathfinding algorithms
-    - **/src/ai/types**: TypeScript type definitions
-
-  - **/src/networking**: Client-side networking code for communicating with the backend.
-    - **/src/networking/api**: API client integration
-    - **/src/networking/websocket**: WebSocket client integration
-    - **/src/networking/models**: Data models for network communication
-    - **/src/networking/types**: TypeScript type definitions
-
-- **/public**: Static files that should be served as-is (favicon, robots.txt, etc.)
-
-- **/assets**: Game assets such as models, textures, audio, etc.
-  - **/assets/models**: 3D models
-  - **/assets/textures**: Texture files
-  - **/assets/audio**: Sound effects and music
-  - **/assets/animations**: Animation files
+### Frontend
+- **/frontend**: Contains all frontend source code.
+  - **/frontend/src**: Main source directory for the Vue application.
+    - **/frontend/src/assets**: Static assets (images, fonts, global styles).
+    - **/frontend/src/components**: Reusable Vue components.
+    - **/frontend/src/composables**: Vue 3 composition API functions.
+    - **/frontend/src/pages**: Top-level page components.
+    - **/frontend/src/router**: Vue Router configuration.
+    - **/frontend/src/stores**: Pinia stores for state management.
+    - **/frontend/src/styles**: Tailwind configuration and global styles.
+    - **/frontend/src/types**: TypeScript type definitions.
+    - **/frontend/src/utils**: Utility functions.
+  - **/frontend/public**: Static files that should be served as-is (favicon, robots.txt, etc.).
 
 ### Backend (Go)
 - **/cmd**: Main applications.
@@ -154,16 +119,10 @@ This document outlines the tasks required to define the game project's folder st
    [x] Document the database strategy and migration approach.
 
 7. **Set Up Project Scaffold**
-   [ ] Initialize the frontend project with Vue 3, Vite, TypeScript, and Tailwind CSS:
-     - [x] Set up Vite 6 project with Vue 3 and TypeScript 5
-     - [x] Configure Tailwind CSS 4.x with PostCSS plugins
-     - [x] Set up feature-based folder structure
-     - [x] Configure Pinia for state management
-     - [x] Set up Vue Router with code-splitting
-     - [x] Implement base Composition API utilities
-     - [ ] Create initial Three.js integration setup
-     - [x] Configure ESLint and Prettier
-     - [ ] Set up Vitest for unit testing
+   [ ] Initialize the frontend project in the /frontend directory with Vue 3, Vite, TypeScript, Tailwind CSS, Pinia, and Vue Router:
+     - [ ] Create a new Vue app with the latest versions of Tailwind CSS, TypeScript, Pinia, and Vue Router
+     - [ ] Set up the default page
+     - [ ] Set up Tailwind CSS with the latest version
 
    [ ] Initialize the Go backend project:
      - [ ] Create Go module at root level (go mod init github.com/username/megacity)
