@@ -9,13 +9,20 @@ This document outlines the tasks required to define the game project's folder st
   - **/frontend/src**: Main source directory for the Vue application.
     - **/frontend/src/assets**: Static assets (images, fonts, global styles).
     - **/frontend/src/components**: Reusable Vue components.
+      - **/frontend/src/components/common**: Shared UI components (buttons, inputs, etc.).
+      - **/frontend/src/components/layout**: Layout components (headers, footers, etc.).
+      - **/frontend/src/components/game**: Game-specific UI components.
     - **/frontend/src/composables**: Vue 3 composition API functions.
-    - **/frontend/src/pages**: Top-level page components.
+    - **/frontend/src/features**: Feature-based modules
+      - **/frontend/src/features/auth**: Authentication related components and logic.
+      - **/frontend/src/features/city**: City management features.
+      - **/frontend/src/features/player**: Player-related features.
+      - **/frontend/src/features/social**: Social interaction features.
+    - **/frontend/src/views**: Top-level page components.
     - **/frontend/src/router**: Vue Router configuration.
     - **/frontend/src/stores**: Pinia stores for state management.
-    - **/frontend/src/styles**: Tailwind configuration and global styles.
+    - **/frontend/src/services**: API services and external integrations.
     - **/frontend/src/types**: TypeScript type definitions.
-    - **/frontend/src/utils**: Utility functions.
   - **/frontend/public**: Static files that should be served as-is (favicon, robots.txt, etc.).
 
 ### Backend (Go)
@@ -119,10 +126,10 @@ This document outlines the tasks required to define the game project's folder st
    [x] Document the database strategy and migration approach.
 
 7. **Set Up Project Scaffold**
-   [ ] Initialize the frontend project in the /frontend directory with Vue 3, Vite, TypeScript, Tailwind CSS, Pinia, and Vue Router:
-     - [ ] Create a new Vue app with the latest versions of Tailwind CSS, TypeScript, Pinia, and Vue Router
-     - [ ] Set up the default page
-     - [ ] Set up Tailwind CSS with the latest version
+   [x] Initialize the frontend project in the /frontend directory with Vue 3, Vite, TypeScript, Tailwind CSS, Pinia, and Vue Router:
+     - [x] Create a new Vue app with the latest versions of Tailwind CSS, TypeScript, Pinia, and Vue Router
+     - [x] Set up the default page
+     - [x] Set up Tailwind CSS with the latest version
 
    [ ] Initialize the Go backend project:
      - [ ] Create Go module at root level (go mod init github.com/username/megacity)
@@ -147,15 +154,46 @@ This document outlines the tasks required to define the game project's folder st
      - [ ] Create database initialization scripts
 
    [ ] Implement basic development workflow:
-     - [ ] Configure hot reloading for frontend development
+     - [x] Configure hot reloading for frontend development
      - [ ] Set up Go development tools and live reloading
      - [ ] Create development documentation for the team
      - [ ] Implement database backup and restore procedures
 
-8. **Establish Data Communication**
+8. **Implement Frontend Game Components**
+   [x] Create a clean starting page for the game:
+     - [x] Remove unnecessary template components and views
+     - [x] Create a simple game intro screen
+     - [x] Implement a clean, minimal layout
+   
+   [x] Set up Three.js integration:
+     - [x] Create a Three.js composable (useThree.ts) for managing the 3D scene
+     - [x] Implement proper reactivity handling with shallowRef to avoid proxy issues
+     - [x] Set up basic scene with lighting and camera
+   
+   [x] Set up Cannon.js physics:
+     - [x] Create a physics composable (usePhysics.ts) for simulation
+     - [x] Implement ground plane and basic physics objects
+     - [x] Set up physics-to-visual synchronization
+   
+   [x] Create basic game components:
+     - [x] Implement GameScene component with 3D rendering
+     - [x] Create a simple city block demonstration
+     - [x] Set up game UI overlay
+   
+   [x] Implement state management:
+     - [x] Create a game store with Pinia
+     - [x] Set up basic game state (player info, city info, game settings)
+     - [x] Implement game actions and mutations
+
+   [x] Set up WebSocket service:
+     - [x] Create a WebSocket service for real-time communication
+     - [x] Implement reconnection logic and message handling
+     - [x] Set up type-safe message passing
+
+9. **Establish Data Communication**
    [ ] Define WebSocket communication protocol between frontend and backend
-   [ ] Create type-safe API client using TypeScript
-   [ ] Implement Pinia stores for managing server state
+   [x] Create type-safe API client using TypeScript
+   [x] Implement Pinia stores for managing server state
    [ ] Implement basic data models for game state synchronization
    [ ] Create API endpoints for core game functionality
    [ ] Set up data persistence across multiple databases:
@@ -163,7 +201,7 @@ This document outlines the tasks required to define the game project's folder st
      - [ ] Store game state in MongoDB
      - [ ] Utilize Redis for caching and real-time data
 
-9. **Implement Database Migration Strategy**
+10. **Implement Database Migration Strategy**
    [ ] Set up Flyway for PostgreSQL schema migrations
    [ ] Create migration scripts for schema evolution
    [ ] Implement MongoDB schema versioning strategy
@@ -171,7 +209,7 @@ This document outlines the tasks required to define the game project's folder st
    [ ] Create data mappers between domain objects and database entities
    [ ] Document database access patterns and query optimization strategies
 
-10. **Integrate Continuous Integration (CI)**
+11. **Integrate Continuous Integration (CI)**
    [ ] Establish CI workflows to facilitate automated testing and builds
    [ ] Configure testing frameworks for both frontend and backend
    [ ] Set up code quality and linting tools
@@ -179,7 +217,7 @@ This document outlines the tasks required to define the game project's folder st
    [ ] Configure type checking in CI pipeline
    [ ] Add database schema validation checks to CI process
 
-11. **Create Development Environment Documentation**
+12. **Create Development Environment Documentation**
    [ ] Document development setup instructions
    [ ] Create API documentation
    [ ] Document data models and schemas
@@ -188,17 +226,54 @@ This document outlines the tasks required to define the game project's folder st
    [ ] Prepare database interaction examples and best practices
    [ ] Prepare contribution guidelines for the team
 
-## 4. Milestones
+## 4. Current Progress and Next Steps
 
-- **Initial Setup:** Complete the folder structure and project scaffold.
-- **Framework Decisions:** Finalize choices for the front-end, rendering engine, physics library, and database technologies.
+### Completed Work
+- Set up the basic project structure with Vue 3, TypeScript, Vite, Tailwind CSS, Pinia, and Vue Router
+- Cleaned up the template code and created a clean starting point for the game
+- Installed and integrated Three.js and Cannon.js for 3D rendering and physics simulation
+- Created essential composables for Three.js, Cannon.js, and WebSocket communication
+- Implemented a basic game scene with 3D objects and physics
+- Set up a game store with Pinia for state management
+- Fixed reactivity issues between Vue and Three.js using shallowRef
+
+### Next Steps
+1. **Enhance the 3D city environment**:
+   - Add more detailed building models and city infrastructure
+   - Implement a proper city grid system
+   - Add terrain and landscape features
+
+2. **Implement core game mechanics**:
+   - City building and zoning functionality
+   - Resource management systems
+   - Player progression and leveling
+
+3. **Develop the backend**:
+   - Set up the Go server with WebSocket support
+   - Implement basic API endpoints
+   - Configure database connections
+
+4. **Enhance the UI**:
+   - Create a comprehensive dashboard for city management
+   - Implement inventory and resource panels
+   - Design notification and event displays
+
+5. **Connect frontend and backend**:
+   - Implement real-time data synchronization
+   - Set up authentication flow
+   - Create data persistence mechanisms
+
+## 5. Milestones
+
+- **Initial Setup:** ✅ Complete the folder structure and project scaffold.
+- **Framework Decisions:** ✅ Finalize choices for the front-end, rendering engine, physics library, and database technologies.
+- **Frontend Prototype:** ✅ Develop an initial working prototype with Three.js and Cannon.js.
 - **Database Foundation:** Establish database schemas, repositories, and migration strategies.
-- **Prototype Build:** Develop an initial working prototype demonstrating the chosen stack.
+- **Backend Implementation:** Develop the Go backend with WebSocket support.
+- **Full-Stack Integration:** Connect frontend and backend with real-time communication.
 - **Documentation Update:** Continuously update this document as decisions are made and milestones are reached.
 
-This task list provides the foundation for our implementation plan, focusing on establishing a robust structural and technological base to successfully build the game project.
-
-## Multiplayer and Social Dynamics Implementation
+## 6. Multiplayer and Social Dynamics Implementation
 
 - **User Progression System:** Allow users to start as individuals, create families, rent houses, and eventually construct their own homes.
 - **Points and Leveling:** Enable users to earn points through gameplay, leveling up to unlock new features and opportunities.
