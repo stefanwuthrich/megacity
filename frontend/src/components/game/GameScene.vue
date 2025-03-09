@@ -4,21 +4,33 @@ import * as THREE from 'three'
 import * as CANNON from 'cannon-es'
 import { useThree } from '@/composables/useThree'
 import { usePhysics } from '@/composables/usePhysics'
+import { useCityGrid, ZoneType } from '@/composables/useCityGrid'
+import { useTextures } from '@/composables/useTextures'
+import { useGameStore } from '@/stores/game'
+
+// Initialize game store
+const gameStore = useGameStore()
 
 // Initialize Three.js
 const { scene, camera, renderer, initialize } = useThree()
 
 // Initialize physics
-const { world, startSimulation, createBox, createGround } = usePhysics()
+const { world, startSimulation } = usePhysics()
 
-// Map of physics bodies to meshes
-const bodyToMesh = new Map()
+// Initialize textures
+const { grassTexture, buildingTextures } = useTextures()
+
+// Initialize city grid
+const { createSimpleCity } = useCityGrid({ width: 20, height: 20 }, 1)
 
 // Reference to the canvas container
 const canvasContainer = ref<HTMLElement | null>(null)
 
 // Animation frame for physics update
 let physicsAnimationId: number | null = null
+
+// Last time for game time updates
+let lastTime = 0
 
 // Setup the scene when component is mounted
 onMounted(() => {
@@ -27,122 +39,115 @@ onMounted(() => {
   // Initialize Three.js with the container
   initialize(canvasContainer.value)
   
+  // Set up camera position for better view
+  if (camera.value) {
+    camera.value.position.set(10, 15, 20)
+    camera.value.lookAt(0, 0, 0)
+  }
+  
+  // Enable shadows in the renderer
+  if (renderer.value) {
+    renderer.value.shadowMap.enabled = true
+    renderer.value.shadowMap.type = THREE.PCFSoftShadowMap
+  }
+  
+  // Add ambient light
+  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5)
+  scene.value.add(ambientLight)
+  
+  // Add directional light (sun)
+  const directionalLight = new THREE.DirectionalLight(0xffffff, 1)
+  directionalLight.position.set(10, 20, 15)
+  directionalLight.castShadow = true
+  
+  // Configure shadow properties
+  directionalLight.shadow.mapSize.width = 2048
+  directionalLight.shadow.mapSize.height = 2048
+  directionalLight.shadow.camera.near = 0.5
+  directionalLight.shadow.camera.far = 50
+  directionalLight.shadow.camera.left = -20
+  directionalLight.shadow.camera.right = 20
+  directionalLight.shadow.camera.top = 20
+  directionalLight.shadow.camera.bottom = -20
+  
+  scene.value.add(directionalLight)
+  
+  // Add hemisphere light for better ambient lighting
+  const hemisphereLight = new THREE.HemisphereLight(0xddeeff, 0x202020, 0.5)
+  scene.value.add(hemisphereLight)
+  
+  // Add a subtle fog effect
+  scene.value.fog = new THREE.FogExp2(0xccccff, 0.01)
+  
   // Start physics simulation
   startSimulation()
   
-  // Setup scene
-  setupScene()
+  // Create the city
+  createSimpleCity(scene.value, world.value)
   
   // Start physics animation update
   updatePhysics()
+  
+  // Initialize game
+  gameStore.initializeGame()
+  gameStore.startGame()
+  
+  // Start game time
+  lastTime = performance.now()
 })
 
 onBeforeUnmount(() => {
   if (physicsAnimationId !== null) {
     cancelAnimationFrame(physicsAnimationId)
   }
+  
+  // Stop the game
+  gameStore.pauseGame()
 })
 
-// Update the physics and sync with visual objects
+// Update the physics and game time
 const updatePhysics = () => {
   physicsAnimationId = requestAnimationFrame(updatePhysics)
   
-  // Update visual objects based on physics
-  bodyToMesh.forEach((mesh, bodyId) => {
-    const body = world.value.bodies.find(b => b.id === bodyId)
-    if (body && mesh) {
-      // Update position
-      mesh.position.x = body.position.x
-      mesh.position.y = body.position.y
-      mesh.position.z = body.position.z
-      
-      // Update rotation
-      mesh.quaternion.x = body.quaternion.x
-      mesh.quaternion.y = body.quaternion.y
-      mesh.quaternion.z = body.quaternion.z
-      mesh.quaternion.w = body.quaternion.w
-    }
+  // Update game time
+  const currentTime = performance.now()
+  const deltaTime = (currentTime - lastTime) / 1000 // in seconds
+  lastTime = currentTime
+  
+  // Update game time in the store
+  gameStore.updateGameTime(deltaTime)
+}
+
+// Add orbit controls for camera
+const addOrbitControls = () => {
+  if (!camera.value || !renderer.value) return
+  
+  // Import OrbitControls dynamically to avoid SSR issues
+  import('three/examples/jsm/controls/OrbitControls.js').then(({ OrbitControls }) => {
+    const controls = new OrbitControls(camera.value!, renderer.value!.domElement)
+    controls.enableDamping = true
+    controls.dampingFactor = 0.05
+    controls.screenSpacePanning = false
+    controls.minDistance = 5
+    controls.maxDistance = 50
+    controls.maxPolarAngle = Math.PI / 2 - 0.1 // Prevent going below ground
   })
 }
 
-// Setup the 3D scene
-const setupScene = () => {
-  // Create a ground plane
-  const groundBody = createGround()
-  
-  // Create a visual representation of the ground
-  const groundGeometry = new THREE.PlaneGeometry(20, 20)
-  const groundMaterial = new THREE.MeshStandardMaterial({ 
-    color: 0x333333,
-    roughness: 0.8,
-    metalness: 0.2
-  })
-  const groundMesh = new THREE.Mesh(groundGeometry, groundMaterial)
-  groundMesh.rotation.x = -Math.PI / 2
-  groundMesh.receiveShadow = true
-  scene.value.add(groundMesh)
-  
-  // Create some boxes
-  createCube(0, 5, 0, 1, 0xff0000)
-  createCube(-2, 7, 2, 1, 0x00ff00)
-  createCube(2, 10, -2, 1, 0x0000ff)
-  
-  // Create a simple city block for demonstration
-  createBuilding(-5, 0.5, -5, 2, 1, 2, 0x8888ff)
-  createBuilding(-5, 0.5, 0, 2, 2, 2, 0x88ff88)
-  createBuilding(0, 0.5, -5, 3, 4, 2, 0xff8888)
-  createBuilding(5, 0.5, 5, 2, 3, 2, 0xffff88)
-}
-
-// Create a cube with physics
-const createCube = (x: number, y: number, z: number, size: number, color: number) => {
-  // Create physics body
-  const position = new CANNON.Vec3(x, y, z)
-  const boxSize = new CANNON.Vec3(size, size, size)
-  const body = createBox(position, boxSize, 1)
-  
-  // Create visual mesh
-  const geometry = new THREE.BoxGeometry(size, size, size)
-  const material = new THREE.MeshStandardMaterial({ color })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.position.set(x, y, z)
-  mesh.castShadow = true
-  mesh.receiveShadow = true
-  scene.value.add(mesh)
-  
-  // Map the body to the mesh for updates
-  bodyToMesh.set(body.id, mesh)
-  
-  return { body, mesh }
-}
-
-// Create a building (static box)
-const createBuilding = (x: number, y: number, z: number, width: number, height: number, depth: number, color: number) => {
-  // Create physics body
-  const position = new CANNON.Vec3(x, y + height / 2, z)
-  const boxSize = new CANNON.Vec3(width, height, depth)
-  const body = createBox(position, boxSize, 0) // zero mass = static
-  
-  // Create visual mesh
-  const geometry = new THREE.BoxGeometry(width, height, depth)
-  const material = new THREE.MeshStandardMaterial({ color })
-  const mesh = new THREE.Mesh(geometry, material)
-  mesh.position.set(x, y + height / 2, z)
-  mesh.castShadow = true
-  mesh.receiveShadow = true
-  scene.value.add(mesh)
-  
-  // Static objects don't need updating
-  // But we'll add them to the map anyway for consistency
-  bodyToMesh.set(body.id, mesh)
-  
-  return { body, mesh }
-}
+// Add orbit controls when component is mounted
+onMounted(() => {
+  addOrbitControls()
+})
 </script>
 
 <template>
   <div class="game-scene">
     <div ref="canvasContainer" class="canvas-container"></div>
+    
+    <!-- Game time display -->
+    <div class="game-time">
+      {{ gameStore.formattedGameTime }}
+    </div>
   </div>
 </template>
 
@@ -151,10 +156,23 @@ const createBuilding = (x: number, y: number, z: number, width: number, height: 
   width: 100%;
   height: 100%;
   overflow: hidden;
+  position: relative;
 }
 
 .canvas-container {
   width: 100%;
   height: 100%;
+}
+
+.game-time {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-family: monospace;
 }
 </style> 
